@@ -21,7 +21,7 @@ class Socket implements SocketInterface
     const BYTES_WRITE = 8192;
 
     /**
-     * @var resource
+     * @var \Socket
      */
     private $socket;
 
@@ -69,7 +69,7 @@ class Socket implements SocketInterface
      */
     public function close()
     {
-        if (is_resource($this->socket)) {
+        if ($this->socket instanceof \Socket === true) {
             socket_close($this->socket);
             $this->socket = null;
         }
@@ -134,7 +134,7 @@ class Socket implements SocketInterface
     public function receive($flags = MSG_WAITALL)
     {
         // $this->reconnect();
-        if (!is_resource($this->socket)) {
+        if ($this->socket instanceof \Socket === false) {
             throw new RuntimeException('Socket is currently closed');
         }
 
@@ -224,7 +224,7 @@ class Socket implements SocketInterface
      */
     private function reconnect()
     {
-        if (!is_resource($this->socket)) {
+        if ($this->socket instanceof \Socket === false) {
             $this->connect();
         }
     }
